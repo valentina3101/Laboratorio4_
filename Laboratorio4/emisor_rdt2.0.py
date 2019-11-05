@@ -1,6 +1,7 @@
 from constantes import *
 from socket import *
 from paquete import *
+from network import *
 
 def create_socket():
 	UDPsocket = socket(AF_INET, SOCK_DGRAM) # creo el socket protocolo de red IP, protocolo transporte UDP
@@ -13,15 +14,15 @@ def rdt_send():
 
 
 def make_pkt(data):
-    pkt = Paquete(EMISOR_PORT , RECEPTOR_PORT, data, 0)
-    cksum = calcular_checksum(pkt)
-    pkt.set_checksum(cksum)
-    return pkt  
+    paquete= Paquete(EMISOR_PORT , RECEPTOR_PORT, data, 0) # atributos de la clase paquete
+    cksum = calcular_checksum(paquete) #calcula el check
+    print("check: ", cksum)
+    pkt.set_checksum(cksum) # setea (modifica el valor) del check
+    return paquete  
 	
 
-
-def udp_send(socket, mensaje, receiver): #data y reciber
-	mensaje=dumps((mensaje, receiver))
+def udp_send(socket, mensaje, receiver): #le pasamos el sevidor el mensaje y el receptor 
+	mensaje=dumps((receiver, mensaje)) # dumps = comprime
 	socket.sendto(mensaje, (NETWORK_IP,NETWORK_PORT))#con esto mando a la red  
 
 
@@ -41,7 +42,7 @@ if __name__ == "__main__":
 	while True: # Iteramos indefinidamente
 		data=rdt_send() # Leemos el mensaje desde teclado
 		paquete=make_pkt(data) # Hacemos el paquete
-		destinatario = (RECEPTOR_IP, RECEPTOR_PORT) # Establecemos el destinatario
-		udp_send(cliente, paquete, destinatario) # Enviamos el mensaje
+		destinatario = (RECEPTOR_IP, RECEPTOR_PORT) #define el destino en el que deberia llegar el packet
+		udp_send(cliente, paquete, destinatario) # Enviamos a la capa red
 	close_socket(cliente)  
 		

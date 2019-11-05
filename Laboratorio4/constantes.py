@@ -16,4 +16,4 @@ NETWORK_PORT    = 12000
 EMISOR_IP       = 'localhost'
 EMISOR_PORT     = 12001
 RECEPTOR_IP     = 'localhost'
-RECEPTOR_PORT   = 12002
+RECEPTOR_PORT   = 12003
